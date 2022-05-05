@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import axios from "axios";
+import ListItem from "./ListItem";
 
 function App() {
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://cat-fact.herokuapp.com/facts/random?animal_type=cat&amount=5"
+      )
+      .then((res) => setList(res.data));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App App-header">
+      <h1>Facts about Cats</h1>
+      {list.map((poke, index) => {
+        return <ListItem index={index} poke={poke} />;
+      })}
     </div>
   );
 }
